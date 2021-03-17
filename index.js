@@ -9,6 +9,7 @@ const options = {
   useCreateIndex: true,
   useUnifiedTopology: true,
 };
+
 mongoose.connect(process.env.MONGODB_URI, options);
 
 // Start the web server
