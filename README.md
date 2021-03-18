@@ -56,3 +56,6 @@ Admin | Read, Create, Update, Delete
 
 - Unit Tests: ```npm run test``` (auth-routes, non ACL routes, and ACL route test suites implemented)
 - Lint Tests: ```npm run lint```
+
+##UML Diagram 
+![UML Diagram](./Lab08.png)
