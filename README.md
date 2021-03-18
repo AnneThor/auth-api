@@ -21,10 +21,8 @@ There is no front end, so this app won't do much from it's deployment (as it wil
 - ```npm start```
 ### Endpoints:
 
-* ```POST``` requests to ```/sign-in``` will compare the plain text password with the bcrypt hash stored in the Users database and return the status of loggedIn ```true``` or ```false```; successul sign in will return:
-![screenshot of successful sign in](./sign-in.png)
-* ```POST``` requests to ```/sign-up``` will has the password and send to the user database to store (if the user with this username does not already exist); if successful, the userwill be displayed in the format
-![screenshot of user json](./sign-up.png)
+* ```POST``` requests to ```/sign-in``` will compare the plain text password with the bcrypt hash stored in the Users database and return the status of loggedIn ```true``` or ```false```
+* ```POST``` requests to ```/sign-up``` will has the password and send to the user database to store (if the user with this username does not already exist)
 * ```GET``` requests to ```/users``` will return a list of usernames that are currently signed up to validated users, invalid users will get an error message; user names will be returned in the format ```["name1", "name2", "name3"...]```
 * ```GET``` requests to ```/secret``` will give validated users access to the secret area, invalid users will be locked out; it will show a message saying "Welcome to the secret area!"
 
