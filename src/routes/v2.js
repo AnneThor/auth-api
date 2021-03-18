@@ -3,12 +3,15 @@
 const fs = require('fs');
 const express = require('express');
 const Collection = require('../models/data-collection.js');
-
-const router = express.Router();
+const bearerAuth = require('../auth/middleware/bearer.js');
+const restrict = require('../auth/middleware/acl.js');
+const aclRouter = new express.Router();
 
 const models = new Map();
 
-router.param('model', (req, res, next) => {
+aclRouter.use(bearerAuth);
+
+aclRouter.param('model', (req, res, next) => {
   const modelName = req.params.model;
   if (models.has(modelName)) {
     req.model = models.get(modelName);
@@ -27,11 +30,17 @@ router.param('model', (req, res, next) => {
   }
 });
 
-router.get('/:model', handleGetAll);
-router.get('/:model/:id', handleGetOne);
-router.post('/:model', handleCreate);
-router.put('/:model/:id', handleUpdate);
-router.delete('/:model/:id', handleDelete);
+// anyone with valid jwt can use get methods
+aclRouter.get('/api/v2/:model', handleGetAll);
+aclRouter.get('/api/v2/:model/:id', handleGetOne);
+// restrict to users with CREATE capability
+aclRouter.post('/api/v2/:model', restrict('create'), handleCreate);
+// restrict to users with UPDATE capability
+aclRouter.put('/api/v2/:model/:id', restrict('update'), handleUpdate);
+aclRouter.patch('/api/v2/:model/:id', restrict('update'), handleUpdate);
+// restrict to users with DELETE capability
+aclRouter.delete('/api/v2/:model/:id', restrict('delete'), handleDelete);
+
 
 async function handleGetAll(req, res) {
   let allRecords = await req.model.get();
@@ -63,5 +72,4 @@ async function handleDelete(req, res) {
   res.status(200).json(deletedRecord);
 }
 
-
-module.exports = router;
+module.exports = aclRouter;

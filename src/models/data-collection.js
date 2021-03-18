@@ -19,9 +19,15 @@ class DataCollection {
     }
   }
 
-  create(record) {
-    let newRecord = new this.model(record);
-    return newRecord.save();
+  async create(record) {
+    try {
+      let newRecord = new this.model(record);
+      let savedRecord = await newRecord.save();
+      return savedRecord;
+    } catch (error) {
+      throw new Error({message: "invalid inputs"})
+    }
+
   }
 
   update(_id, record) {
